@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A46472442FE56B7700CC035B /* IOSApp3 Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A46472432FE56B7700CC035B /* IOSApp3 Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A46472582FE56BFB00CC035B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46472572FE56BF300CC035B /* HomeView.swift */; };
+		A464725A2FE56CAA00CC035B /* CustimTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46472592FE56C9D00CC035B /* CustimTimerView.swift */; };
+		A464725C2FE56CCB00CC035B /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A464725B2FE56CC200CC035B /* TimerView.swift */; };
+		A464725E2FE56CEC00CC035B /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A464725D2FE56CE300CC035B /* TimerViewModel.swift */; };
+		A46472622FE56D7E00CC035B /* PresentTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46472612FE56D7300CC035B /* PresentTimerView.swift */; };
+		A46472642FE56DB700CC035B /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46472632FE56DA700CC035B /* ProgressRing.swift */; };
+		A46472662FE56DD400CC035B /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46472652FE56DCB00CC035B /* NotificationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +33,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				A46472442FE56B7700CC035B /* IOSApp3 Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -35,8 +40,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A464723D2FE56B7700CC035B /* IOSApp3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSApp3.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A46472432FE56B7700CC035B /* IOSApp3 Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOSApp3 Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A464723D2FE56B7700CC035B /* IOSApp3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = IOSApp3.app; path = "/Users/fozia/Desktop/IOs 2026/IOSApp3/build/Debug-iphoneos/IOSApp3.app"; sourceTree = "<absolute>"; };
+		A46472432FE56B7700CC035B /* IOSApp3 Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "IOSApp3 Watch App.app"; path = "/Users/fozia/Desktop/IOs 2026/IOSApp3/build/Debug-watchos/IOSApp3 Watch App.app"; sourceTree = "<absolute>"; };
+		A46472572FE56BF300CC035B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A46472592FE56C9D00CC035B /* CustimTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustimTimerView.swift; sourceTree = "<group>"; };
+		A464725B2FE56CC200CC035B /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		A464725D2FE56CE300CC035B /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		A46472612FE56D7300CC035B /* PresentTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTimerView.swift; sourceTree = "<group>"; };
+		A46472632FE56DA700CC035B /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
+		A46472652FE56DCB00CC035B /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -62,17 +74,38 @@
 			isa = PBXGroup;
 			children = (
 				A46472472FE56B7700CC035B /* IOSApp3 Watch App */,
-				A464723E2FE56B7700CC035B /* Products */,
+				A464726A2FE573F800CC035B /* Managers */,
+				A46472692FE573E200CC035B /* ViewModels */,
+				A46472672FE5731500CC035B /* Views */,
 			);
 			sourceTree = "<group>";
 		};
-		A464723E2FE56B7700CC035B /* Products */ = {
+		A46472672FE5731500CC035B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A464723D2FE56B7700CC035B /* IOSApp3.app */,
-				A46472432FE56B7700CC035B /* IOSApp3 Watch App.app */,
+				A46472632FE56DA700CC035B /* ProgressRing.swift */,
+				A464725B2FE56CC200CC035B /* TimerView.swift */,
+				A46472572FE56BF300CC035B /* HomeView.swift */,
+				A46472612FE56D7300CC035B /* PresentTimerView.swift */,
+				A46472592FE56C9D00CC035B /* CustimTimerView.swift */,
 			);
-			name = Products;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A46472692FE573E200CC035B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A464725D2FE56CE300CC035B /* TimerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A464726A2FE573F800CC035B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A46472652FE56DCB00CC035B /* NotificationManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,7 +180,7 @@
 			mainGroup = A46472362FE56B7600CC035B;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = A464723E2FE56B7700CC035B /* Products */;
+			productRefGroup = A46472362FE56B7600CC035B;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -179,6 +212,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A464725E2FE56CEC00CC035B /* TimerViewModel.swift in Sources */,
+				A46472622FE56D7E00CC035B /* PresentTimerView.swift in Sources */,
+				A46472642FE56DB700CC035B /* ProgressRing.swift in Sources */,
+				A46472662FE56DD400CC035B /* NotificationManager.swift in Sources */,
+				A464725A2FE56CAA00CC035B /* CustimTimerView.swift in Sources */,
+				A46472582FE56BFB00CC035B /* HomeView.swift in Sources */,
+				A464725C2FE56CCB00CC035B /* TimerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
