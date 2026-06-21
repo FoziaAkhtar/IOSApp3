@@ -1,13 +1,13 @@
 
-//
+// =========================================
 // HomeView.swift
 // iOSApp3
-//
+// ========================================
 // This is the main menu screen of the app.
 // Users can navigate to either:
 // 1. Preset timer screen
 // 2. Custom timer screen
-//
+// ========================================
 
 import SwiftUI
 
