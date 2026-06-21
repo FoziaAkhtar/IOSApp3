@@ -1,80 +1,65 @@
 
+// ==============================================
+// IOSApp3
+// NotificationManager
 //
-// NotificationManager.swift
-// iOSApp3
-//
-// This class manages local notifications.
-// A notification is displayed when the timer finishes.
-//
+// Purpose:
+// Manages local notifications for the app.
+// Sends a notification when the timer finishes.
+// ==============================================
 
 import Foundation
 import UserNotifications
 
 class NotificationManager {
 
-    // =====================================================
-    // Singleton instance
-    // Allows one shared notification manager
-    // throughout the entire application
-    // =====================================================
+    // Shared instance (Singleton)
     static let shared = NotificationManager()
 
-    // Private initializer prevents creation
-    // of additional NotificationManager objects
+    // Private initializer (prevents multiple instances)
     private init() {
         requestPermission()
     }
 
-    // =====================================================
-    // Requests notification permission from the user
-    // =====================================================
+    // Request permission for notifications
     func requestPermission() {
 
         UNUserNotificationCenter.current()
-            .requestAuthorization(
-                options: [.alert, .sound]
-            ) { granted, error in
+            .requestAuthorization(options: [.alert, .sound]) { granted, error in
 
                 if let error = error {
-                    print("Notification permission error: \(error.localizedDescription)")
+                    print("Notification error: \(error.localizedDescription)")
                 }
 
-                print("Permission granted: \(granted)")
+                print("Notification permission granted: \(granted)")
             }
     }
 
-    // =====================================================
-    // Schedules a local notification when the
-    // countdown timer has completed
-    // =====================================================
+    // Schedule notification when timer ends
     func scheduleNotification() {
 
-        // Create notification content
         let content = UNMutableNotificationContent()
-
         content.title = "Timer Finished"
         content.body = "Your countdown is complete."
         content.sound = .default
 
-        // Trigger notification after 1 second
+        // Trigger after short delay (for demo/testing)
         let trigger = UNTimeIntervalNotificationTrigger(
             timeInterval: 1,
             repeats: false
         )
 
-        // Create notification request
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,
             content: content,
             trigger: trigger
         )
 
-        // Add notification to notification center
         UNUserNotificationCenter.current()
             .add(request) { error in
 
                 if let error = error {
-                    print("Notification error: \(error.localizedDescription)")
+                    print("Failed to schedule notification: \(error.localizedDescription)")
                 }
             }
     }

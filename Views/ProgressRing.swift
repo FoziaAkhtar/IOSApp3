@@ -1,63 +1,47 @@
 
+import SwiftUI
+
 // =====================================
 // IOSApp3
 // ProgressRing
 // Purpose:
-//  This view displays a circular progress indicator used to visually
-//  represent timer progress from 0% to 100%. It shows a background
-//  track and a foreground progress arc that updates as the timer runs.
+// Shows a circular progress indicator from 0% to 100%.
+// Used to visually display timer progress.
 // =====================================
-import SwiftUI
 
 struct ProgressRing: View {
 
-    // Current progress value (0.0 = 0%, 1.0 = 100%)
+    // Progress value (0.0 = empty, 1.0 = full)
     var progress: Double
 
     var body: some View {
 
-        // Layers the background ring and progress ring on top of each other
         ZStack {
 
-            // =====================================================
-            // Background Ring (Base Track)
-            // =====================================================
-            // This is the full circle shown as a faint outline.
-            // It represents the total progress capacity.
+            // Background ring (full circle track)
             Circle()
-                .stroke(lineWidth: 10)   // Ring thickness
-                .opacity(0.2)            // Light gray background
+                .stroke(lineWidth: 10)
+                .opacity(0.2)
 
-            // =====================================================
-            // Progress Ring (Foreground Fill)
-            // =====================================================
-            // This circle is "trimmed" to show progress.
-            // Only a portion of the circle is drawn based on value.
+            // Progress ring (filled portion)
             Circle()
-                .trim(from: 0, to: progress) // Controls progress amount (0 → 1)
-
+                .trim(from: 0, to: progress)
                 .stroke(
                     style: StrokeStyle(
-                        lineWidth: 10,       // Matches background thickness
-                        lineCap: .round      // Rounded ends for smoother UI
+                        lineWidth: 10,
+                        lineCap: .round
                     )
                 )
-
-                // Rotates so progress starts from top (12 o'clock position)
                 .rotationEffect(.degrees(-90))
-
-                // Animates changes in progress smoothly
                 .animation(.linear, value: progress)
         }
 
-        // Fixed size of the ring
+        // Ring size
         .frame(width: 120, height: 120)
     }
 }
 
-// =====================================================
-// Preview (Xcode Canvas)
-// =====================================================
+// Preview
 #Preview {
     ProgressRing(progress: 0.75)
 }

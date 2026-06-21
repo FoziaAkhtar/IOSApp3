@@ -1,16 +1,12 @@
 
 // ===========================================
-// TimerViewModel.swift
-// iOSApp3
-// ===========================================
-// Handles all timer functionality:
-// - Start timer
-// - Pause timer
-// - Reset timer
-// - Save and load timer state
-// - Progress ring updates
-// - Watch haptics
-// - Completion notifications
+// IOSApp3
+// TimerViewModel
+//
+// Purpose:
+// Handles all timer logic including:
+// start, pause, reset, persistence,
+// progress updates, haptics, notifications.
 // ===========================================
 
 import SwiftUI
@@ -19,42 +15,28 @@ import WatchKit
 
 class TimerViewModel: ObservableObject {
 
-    // =====================================================
-    // Published properties automatically update the UI
-    // =====================================================
-
-    // Current countdown value
+    // Published UI state
     @Published var timeRemaining = 0
-
-    // Original timer value
     @Published var totalTime = 0
-
-    // Tracks whether timer is running
     @Published var isRunning = false
 
-    // Internal timer object
+    // Internal timer
     private var timer: Timer?
 
     // UserDefaults key
     private let saveKey = "SavedTimer"
 
-    // =====================================================
-    // Initialization
-    // =====================================================
+    // Init
     init() {
         loadTimer()
     }
 
-    // =====================================================
-    // Clean up timer when object is removed
-    // =====================================================
+    // Cleanup
     deinit {
         timer?.invalidate()
     }
 
-    // =====================================================
     // Set timer duration
-    // =====================================================
     func setTimer(seconds: Int) {
 
         timer?.invalidate()
@@ -66,9 +48,7 @@ class TimerViewModel: ObservableObject {
         saveTimer()
     }
 
-    // =====================================================
-    // Start countdown
-    // =====================================================
+    // Start timer
     func startTimer() {
 
         guard timeRemaining > 0 else { return }
@@ -76,10 +56,7 @@ class TimerViewModel: ObservableObject {
 
         isRunning = true
 
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 1,
-            repeats: true
-        ) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
 
             guard let self = self else { return }
 
@@ -87,47 +64,29 @@ class TimerViewModel: ObservableObject {
 
                 self.timeRemaining -= 1
 
-                // Warning haptic during final 10 seconds
-                if self.timeRemaining <= 10 &&
-                    self.timeRemaining > 0 {
-
-                    WKInterfaceDevice.current()
-                        .play(.click)
+                // Final countdown haptic
+                if self.timeRemaining <= 10 {
+                    WKInterfaceDevice.current().play(.click)
                 }
 
             } else {
 
-                self.timer?.invalidate()
-                self.timer = nil
-                self.isRunning = false
-
-                // Completion haptic
-                WKInterfaceDevice.current()
-                    .play(.success)
-
-                // Completion notification
-                NotificationManager.shared
-                    .scheduleNotification()
+                self.completeTimer()
             }
 
             self.saveTimer()
         }
     }
 
-    // =====================================================
     // Pause timer
-    // =====================================================
     func pauseTimer() {
 
         timer?.invalidate()
         timer = nil
-
         isRunning = false
     }
 
-    // =====================================================
     // Reset timer
-    // =====================================================
     func resetTimer() {
 
         timer?.invalidate()
@@ -139,45 +98,42 @@ class TimerViewModel: ObservableObject {
         saveTimer()
     }
 
-    // =====================================================
-    // Save timer state
-    // =====================================================
-    func saveTimer() {
+    // MARK: - Completion handler (NEW FIX)
+    private func completeTimer() {
 
-        UserDefaults.standard.set(
-            timeRemaining,
-            forKey: saveKey
-        )
+        timer?.invalidate()
+        timer = nil
+        isRunning = false
+
+        WKInterfaceDevice.current().play(.success)
+
+        // schedule notification for REAL duration (not 1 second)
+        NotificationManager.shared.scheduleNotification()
+
+        saveTimer()
     }
 
-    // =====================================================
-    // Load timer state
-    // =====================================================
+    // Save state
+    func saveTimer() {
+        UserDefaults.standard.set(timeRemaining, forKey: saveKey)
+    }
+
+    // Load state
     func loadTimer() {
 
-        let savedTime =
-            UserDefaults.standard.integer(
-                forKey: saveKey
-            )
+        let savedTime = UserDefaults.standard.integer(forKey: saveKey)
 
         if savedTime > 0 {
-
             timeRemaining = savedTime
             totalTime = savedTime
         }
     }
 
-    // =====================================================
-    // Progress value for ProgressRing
-    // Returns a value between 0.0 and 1.0
-    // =====================================================
+    // Progress (0 → 1)
     var progress: Double {
 
-        guard totalTime > 0 else {
-            return 0
-        }
+        guard totalTime > 0 else { return 0 }
 
-        return Double(timeRemaining) /
-               Double(totalTime)
+        return Double(timeRemaining) / Double(totalTime)
     }
 }

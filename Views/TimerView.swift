@@ -1,105 +1,83 @@
 
 // ================================================
-// TimerView.swift
-// iOSApp3
+// IOSApp3
+// TimerView
 //
-// This view displays the countdown timer UI.
-// It shows a progress ring, remaining time,
-// and controls to start, pause, and reset the timer.
-// =================================================
+// Purpose:
+// Displays countdown timer UI with:
+// - Progress ring
+// - Remaining time
+// - Start, pause, reset controls
+// ================================================
 
 import SwiftUI
 
 struct TimerView: View {
 
-    // Total time passed into this view (in seconds)
+    // Total duration passed from previous screen
     let seconds: Int
 
-    // ViewModel that handles all timer logic
+    // Timer logic controller
     @StateObject private var timerVM = TimerViewModel()
 
     var body: some View {
 
-        ScrollView {
+        VStack(spacing: 15) {
 
-            VStack(spacing: 10) {
+            // =====================================================
+            // Progress Indicator
+            // =====================================================
+            ProgressRing(progress: timerVM.progress)
 
-                // =====================================================
-                // Visual progress indicator
-                // =====================================================
-                ProgressRing(
-                    progress: timerVM.progress
-                )
+            // =====================================================
+            // Remaining Time Display
+            // =====================================================
+            Text(formatTime(timerVM.timeRemaining))
+                .font(.headline)
+                .bold()
 
-                // =====================================================
-                // Remaining time display
-                // =====================================================
-                Text(formatTime(timerVM.timeRemaining))
-                    .font(.headline)
-                    .bold()
+            // =====================================================
+            // Controls
+            // =====================================================
+            HStack(spacing: 20) {
 
-                // =====================================================
-                // Start Button
-                // =====================================================
                 Button {
-
                     timerVM.startTimer()
-
                 } label: {
-
                     Label("Start", systemImage: "play.fill")
                 }
 
-                // =====================================================
-                // Pause Button
-                // =====================================================
                 Button {
-
                     timerVM.pauseTimer()
-
                 } label: {
-
                     Label("Pause", systemImage: "pause.fill")
                 }
 
-                // =====================================================
-                // Reset Button
-                // =====================================================
                 Button {
-
                     timerVM.resetTimer()
-
                 } label: {
-
                     Label("Reset", systemImage: "arrow.counterclockwise")
                 }
             }
-            .padding()
         }
+        .padding()
 
-        // =====================================================
-        // Initialize timer when view appears
-        // =====================================================
+        // Set timer only once when screen opens
         .onAppear {
-
             timerVM.setTimer(seconds: seconds)
         }
     }
 
     // =====================================================
-    // Converts seconds into MM:SS format
-    // Example: 90 -> 01:30
+    // Format seconds into MM:SS
+    // Example: 90 → 01:30
     // =====================================================
     func formatTime(_ totalSeconds: Int) -> String {
 
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
 
-        return String(
-            format: "%02d:%02d",
-            minutes,
-            seconds
-        )
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 

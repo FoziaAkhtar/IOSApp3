@@ -1,25 +1,21 @@
 
 // ==============================================
-// CustomTimerView.swift
-// iOSApp3
+// IOSApp3
+// CustomTimerView
 //
-// This view allows users to create a custom timer
-// by selecting minutes and seconds using pickers.
-// ================================================
+// Purpose:
+// Allows user to create a custom timer
+// using minute and second pickers.
+// ==============================================
 
 import SwiftUI
 
 struct CustomTimerView: View {
 
-    // =====================================================
-    // State variables store user-selected values
-    // They automatically update the UI when changed
-    // =====================================================
-
-    // Stores selected minutes (default = 1)
+    // Selected minutes
     @State private var minutes = 1
 
-    // Stores selected seconds (default = 0)
+    // Selected seconds
     @State private var seconds = 0
 
     var body: some View {
@@ -30,37 +26,28 @@ struct CustomTimerView: View {
             Text("Custom Timer")
                 .font(.headline)
 
-            // =====================================================
-            // Picker for selecting minutes (0 to 59)
-            // =====================================================
+            // Minutes picker
             Picker("Minutes", selection: $minutes) {
 
                 ForEach(0..<60, id: \.self) { minute in
-                    Text("\(minute) Min")
+                    Text("\(minute) min")
                 }
             }
-            .pickerStyle(WheelPickerStyle()) // Makes it look like watch/iOS timer style
+            .pickerStyle(.wheel)
 
-            // =====================================================
-            // Picker for selecting seconds (0 to 59)
-            // =====================================================
+            // Seconds picker
             Picker("Seconds", selection: $seconds) {
 
                 ForEach(0..<60, id: \.self) { second in
-                    Text("\(second) Sec")
+                    Text("\(second) sec")
                 }
             }
-            .pickerStyle(WheelPickerStyle())
+            .pickerStyle(.wheel)
 
-            // =====================================================
-            // Navigation to Timer Screen
-            // Passes total time in seconds
-            // =====================================================
+            // Navigate to timer screen
             NavigationLink {
 
-                TimerView(
-                    seconds: (minutes * 60) + seconds
-                )
+                TimerView(seconds: (minutes * 60) + seconds)
 
             } label: {
 
@@ -72,5 +59,6 @@ struct CustomTimerView: View {
             }
         }
         .padding()
+        .navigationTitle("Custom Timer")
     }
 }
