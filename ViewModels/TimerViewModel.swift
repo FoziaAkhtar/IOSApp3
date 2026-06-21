@@ -1,12 +1,17 @@
 
-//
+// ===========================================
 // TimerViewModel.swift
 // iOSApp3
-//
-// Handles all timer logic including:
-// start, pause, reset, persistence, progress updates,
-// notifications, and Watch haptics.
-//
+// ===========================================
+// Handles all timer functionality:
+// - Start timer
+// - Pause timer
+// - Reset timer
+// - Save and load timer state
+// - Progress ring updates
+// - Watch haptics
+// - Completion notifications
+// ===========================================
 
 import SwiftUI
 import Combine
@@ -15,59 +20,79 @@ import WatchKit
 class TimerViewModel: ObservableObject {
 
     // =====================================================
-    // UI-UPDATED VALUES
+    // Published properties automatically update the UI
     // =====================================================
 
-    // Current countdown time (seconds remaining)
+    // Current countdown value
     @Published var timeRemaining = 0
 
-    // Original starting time (used for reset + progress)
+    // Original timer value
     @Published var totalTime = 0
 
-    // Tracks whether timer is currently running
+    // Tracks whether timer is running
     @Published var isRunning = false
 
-    // Internal Timer object
+    // Internal timer object
     private var timer: Timer?
 
-    // Key for saving data in UserDefaults
+    // UserDefaults key
     private let saveKey = "SavedTimer"
 
     // =====================================================
-    // INITIALIZATION
+    // Initialization
     // =====================================================
     init() {
         loadTimer()
     }
 
     // =====================================================
-    // SET TIMER VALUE
+    // Clean up timer when object is removed
+    // =====================================================
+    deinit {
+        timer?.invalidate()
+    }
+
+    // =====================================================
+    // Set timer duration
     // =====================================================
     func setTimer(seconds: Int) {
+
+        timer?.invalidate()
+
         totalTime = seconds
         timeRemaining = seconds
+        isRunning = false
+
         saveTimer()
     }
 
     // =====================================================
-    // START TIMER
+    // Start countdown
     // =====================================================
     func startTimer() {
 
         guard timeRemaining > 0 else { return }
-        guard isRunning == false else { return }
+        guard !isRunning else { return }
 
         isRunning = true
 
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        timer = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: true
+        ) { [weak self] _ in
+
+            guard let self = self else { return }
 
             if self.timeRemaining > 0 {
 
                 self.timeRemaining -= 1
 
-                // Warning haptic in last 10 seconds
-                if self.timeRemaining <= 10 {
-                    WKInterfaceDevice.current().play(.click)
+                // Warning haptic during final 10 seconds
+                if self.timeRemaining <= 10 &&
+                    self.timeRemaining > 0 {
+
+                    WKInterfaceDevice.current()
+                        .play(.click)
                 }
 
             } else {
@@ -76,9 +101,13 @@ class TimerViewModel: ObservableObject {
                 self.timer = nil
                 self.isRunning = false
 
-                WKInterfaceDevice.current().play(.success)
+                // Completion haptic
+                WKInterfaceDevice.current()
+                    .play(.success)
 
-                NotificationManager.shared.scheduleNotification()
+                // Completion notification
+                NotificationManager.shared
+                    .scheduleNotification()
             }
 
             self.saveTimer()
@@ -86,49 +115,69 @@ class TimerViewModel: ObservableObject {
     }
 
     // =====================================================
-    // PAUSE TIMER
+    // Pause timer
     // =====================================================
     func pauseTimer() {
+
         timer?.invalidate()
         timer = nil
+
         isRunning = false
     }
 
     // =====================================================
-    // RESET TIMER
+    // Reset timer
     // =====================================================
     func resetTimer() {
+
         timer?.invalidate()
         timer = nil
+
         timeRemaining = totalTime
         isRunning = false
+
         saveTimer()
     }
 
     // =====================================================
-    // SAVE TIMER
+    // Save timer state
     // =====================================================
     func saveTimer() {
-        UserDefaults.standard.set(timeRemaining, forKey: saveKey)
+
+        UserDefaults.standard.set(
+            timeRemaining,
+            forKey: saveKey
+        )
     }
 
     // =====================================================
-    // LOAD TIMER
+    // Load timer state
     // =====================================================
     func loadTimer() {
-        let saved = UserDefaults.standard.integer(forKey: saveKey)
 
-        if saved > 0 {
-            timeRemaining = saved
-            totalTime = saved
+        let savedTime =
+            UserDefaults.standard.integer(
+                forKey: saveKey
+            )
+
+        if savedTime > 0 {
+
+            timeRemaining = savedTime
+            totalTime = savedTime
         }
     }
 
     // =====================================================
-    // PROGRESS (0.0 → 1.0)
+    // Progress value for ProgressRing
+    // Returns a value between 0.0 and 1.0
     // =====================================================
     var progress: Double {
-        guard totalTime > 0 else { return 0 }
-        return Double(timeRemaining) / Double(totalTime)
+
+        guard totalTime > 0 else {
+            return 0
+        }
+
+        return Double(timeRemaining) /
+               Double(totalTime)
     }
 }
