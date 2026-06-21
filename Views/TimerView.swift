@@ -1,12 +1,12 @@
 
-//
+// ================================================
 // TimerView.swift
 // iOSApp3
 //
 // This view displays the countdown timer UI.
 // It shows a progress ring, remaining time,
 // and controls to start, pause, and reset the timer.
-//
+// =================================================
 
 import SwiftUI
 
@@ -15,64 +15,80 @@ struct TimerView: View {
     // Total time passed into this view (in seconds)
     let seconds: Int
 
-    // ViewModel that handles all timer logic (countdown, progress, state)
+    // ViewModel that handles all timer logic
     @StateObject private var timerVM = TimerViewModel()
 
     var body: some View {
 
-        VStack(spacing: 15) {
+        ScrollView {
 
-            // =====================================================
-            // Visual progress indicator (circular ring)
-            // Shows how much time is remaining
-            // =====================================================
-            ProgressRing(progress: timerVM.progress)
+            VStack(spacing: 10) {
 
-            // =====================================================
-            // Remaining time display in MM:SS format
-            // =====================================================
-            Text(formatTime(timerVM.timeRemaining))
-                .font(.title2)
-                .bold()
+                // =====================================================
+                // Visual progress indicator
+                // =====================================================
+                ProgressRing(
+                    progress: timerVM.progress
+                )
 
-            // =====================================================
-            // Timer control buttons (Start / Pause)
-            // =====================================================
-            HStack {
+                // =====================================================
+                // Remaining time display
+                // =====================================================
+                Text(formatTime(timerVM.timeRemaining))
+                    .font(.headline)
+                    .bold()
 
-                // Starts or resumes the timer
-                Button("Start") {
+                // =====================================================
+                // Start Button
+                // =====================================================
+                Button {
+
                     timerVM.startTimer()
+
+                } label: {
+
+                    Label("Start", systemImage: "play.fill")
                 }
 
-                // Pauses the timer without resetting progress
-                Button("Pause") {
+                // =====================================================
+                // Pause Button
+                // =====================================================
+                Button {
+
                     timerVM.pauseTimer()
+
+                } label: {
+
+                    Label("Pause", systemImage: "pause.fill")
+                }
+
+                // =====================================================
+                // Reset Button
+                // =====================================================
+                Button {
+
+                    timerVM.resetTimer()
+
+                } label: {
+
+                    Label("Reset", systemImage: "arrow.counterclockwise")
                 }
             }
-
-            // =====================================================
-            // Reset button (resets timer to original value)
-            // =====================================================
-            Button("Reset") {
-                timerVM.resetTimer()
-            }
+            .padding()
         }
 
-        .padding()
-
         // =====================================================
-        // Initializes timer when screen appears
-        // Passes selected duration from previous screen
+        // Initialize timer when view appears
         // =====================================================
         .onAppear {
+
             timerVM.setTimer(seconds: seconds)
         }
     }
 
     // =====================================================
-    // Helper function: converts seconds → MM:SS format
-    // Example: 90 → 01:30
+    // Converts seconds into MM:SS format
+    // Example: 90 -> 01:30
     // =====================================================
     func formatTime(_ totalSeconds: Int) -> String {
 
@@ -85,4 +101,8 @@ struct TimerView: View {
             seconds
         )
     }
+}
+
+#Preview {
+    TimerView(seconds: 60)
 }
