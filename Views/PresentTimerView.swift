@@ -1,71 +1,60 @@
 
+// ============================================
+//  PresetTimerView.swift
+//  iOSApp3
+//
+//  Purpose:
+//  This view provides a list of preset timer options (1, 5, 10, 20, 30 minutes).
+//  Each option navigates to the TimerView with a predefined duration in seconds.
+// =============================================
+
 import SwiftUI
 
 struct PresetTimerView: View {
 
     var body: some View {
 
-        // ScrollView allows the list to scroll if content exceeds screen size
+        // Scrollable container for all preset timer options
         ScrollView {
 
-            // Vertical stack to arrange all preset timer buttons
+            // Vertical layout for preset buttons
             VStack(spacing: 12) {
 
                 // Screen title
                 Text("Preset Timers")
                     .font(.headline)
 
-                // =====================================================
-                // Navigation Link: 1 Minute Timer
-                // =====================================================
+                // 1 Minute Timer
                 NavigationLink("1 Minute") {
-
-                    // Opens TimerView with 60 seconds
                     TimerView(seconds: 60)
                 }
 
-                // =====================================================
-                // Navigation Link: 5 Minutes Timer
-                // =====================================================
+                // 5 Minute Timer
                 NavigationLink("5 Minutes") {
-
-                    // 5 minutes = 300 seconds
                     TimerView(seconds: 300)
                 }
 
-                // =====================================================
-                // Navigation Link: 10 Minutes Timer
-                // =====================================================
+                // 10 Minute Timer
                 NavigationLink("10 Minutes") {
-
-                    // 10 minutes = 600 seconds
                     TimerView(seconds: 600)
                 }
 
-                // =====================================================
-                // Navigation Link: 20 Minutes Timer
-                // =====================================================
+                // 20 Minute Timer
                 NavigationLink("20 Minutes") {
-
-                    // 20 minutes = 1200 seconds
                     TimerView(seconds: 1200)
                 }
 
-                // =====================================================
-                // Navigation Link: 30 Minutes Timer
-                // =====================================================
+                // 30 Minute Timer
                 NavigationLink("30 Minutes") {
-
-                    // 30 minutes = 1800 seconds
                     TimerView(seconds: 1800)
                 }
             }
-            .padding() // Adds spacing around content
+            .padding()
         }
     }
 }
 
-// Preview for Xcode canvas
+// Preview
 #Preview {
     PresetTimerView()
 }
