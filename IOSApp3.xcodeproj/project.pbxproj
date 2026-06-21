@@ -47,8 +47,8 @@
 		A46472612FE56D7300CC035B /* PresentTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTimerView.swift; sourceTree = "<group>"; };
 		A46472632FE56DA700CC035B /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
 		A46472652FE56DCB00CC035B /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		A464726D2FE5776400CC035B /* IOSApp3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSApp3.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A464726E2FE5776400CC035B /* IOSApp3 Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOSApp3 Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A464726D2FE5776400CC035B /* IOSApp3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = IOSApp3.app; path = "/Users/fozia/Desktop/IOs 2026/IOSApp3/build/Debug-iphoneos/IOSApp3.app"; sourceTree = "<absolute>"; };
+		A464726E2FE5776400CC035B /* IOSApp3 Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "IOSApp3 Watch App.app"; path = "/Users/fozia/Desktop/IOs 2026/IOSApp3/build/Debug-watchos/IOSApp3 Watch App.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -77,8 +77,6 @@
 				A464726A2FE573F800CC035B /* Managers */,
 				A46472692FE573E200CC035B /* ViewModels */,
 				A46472672FE5731500CC035B /* Views */,
-				A464726D2FE5776400CC035B /* IOSApp3.app */,
-				A464726E2FE5776400CC035B /* IOSApp3 Watch App.app */,
 			);
 			sourceTree = "<group>";
 		};
