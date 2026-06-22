@@ -15,28 +15,41 @@ import WatchKit
 
 class TimerViewModel: ObservableObject {
 
-    // Published UI state
+    // =====================================================
+    // Published UI state (updates UI automatically)
+    // =====================================================
     @Published var timeRemaining = 0
     @Published var totalTime = 0
     @Published var isRunning = false
 
-    // Internal timer
+    // =====================================================
+    // Internal timer reference
+    // =====================================================
     private var timer: Timer?
 
-    // UserDefaults key
-    private let saveKey = "SavedTimer"
+    // =====================================================
+    // UserDefaults keys (better separation of values)
+    // =====================================================
+    private let remainingKey = "SavedRemainingTime"
+    private let totalKey = "SavedTotalTime"
 
-    // Init
+    // =====================================================
+    // Init: load saved state if available
+    // =====================================================
     init() {
         loadTimer()
     }
 
-    // Cleanup
+    // =====================================================
+    // Cleanup: stop timer when object is destroyed
+    // =====================================================
     deinit {
         timer?.invalidate()
     }
 
-    // Set timer duration
+    // =====================================================
+    // Set new timer duration
+    // =====================================================
     func setTimer(seconds: Int) {
 
         timer?.invalidate()
@@ -48,7 +61,9 @@ class TimerViewModel: ObservableObject {
         saveTimer()
     }
 
-    // Start timer
+    // =====================================================
+    // Start timer countdown
+    // =====================================================
     func startTimer() {
 
         guard timeRemaining > 0 else { return }
@@ -60,25 +75,36 @@ class TimerViewModel: ObservableObject {
 
             guard let self = self else { return }
 
-            if self.timeRemaining > 0 {
-
-                self.timeRemaining -= 1
-
-                // Final countdown haptic
-                if self.timeRemaining <= 10 {
-                    WKInterfaceDevice.current().play(.click)
-                }
-
-            } else {
-
+            // =================================================
+            // Prevent negative values + ensure safe completion
+            // =================================================
+            if self.timeRemaining <= 0 {
                 self.completeTimer()
+                return
+            }
+
+            // =================================================
+            // Normal countdown decrement
+            // =================================================
+            self.timeRemaining -= 1
+
+            // =================================================
+            // Final 10 seconds warning haptic (watch only)
+            // =================================================
+            if self.timeRemaining <= 10 {
+
+                #if os(watchOS)
+                WKInterfaceDevice.current().play(.click)
+                #endif
             }
 
             self.saveTimer()
         }
     }
 
+    // =====================================================
     // Pause timer
+    // =====================================================
     func pauseTimer() {
 
         timer?.invalidate()
@@ -86,7 +112,9 @@ class TimerViewModel: ObservableObject {
         isRunning = false
     }
 
-    // Reset timer
+    // =====================================================
+    // Reset timer back to full duration
+    // =====================================================
     func resetTimer() {
 
         timer?.invalidate()
@@ -98,38 +126,55 @@ class TimerViewModel: ObservableObject {
         saveTimer()
     }
 
-    // MARK: - Completion handler (NEW FIX)
+    // =====================================================
+    // Handles timer completion logic
+    // =====================================================
     private func completeTimer() {
 
         timer?.invalidate()
         timer = nil
         isRunning = false
 
+        // Completion haptic (watch only safe)
+        #if os(watchOS)
         WKInterfaceDevice.current().play(.success)
+        #endif
 
-        // schedule notification for REAL duration (not 1 second)
-        NotificationManager.shared.scheduleNotification()
+        // Schedule notification for REAL timer duration
+        NotificationManager.shared.scheduleNotification(seconds: totalTime)
 
         saveTimer()
     }
 
-    // Save state
+    // =====================================================
+    // Save timer state (persistent storage)
+    // =====================================================
     func saveTimer() {
-        UserDefaults.standard.set(timeRemaining, forKey: saveKey)
+
+        UserDefaults.standard.set(timeRemaining, forKey: remainingKey)
+        UserDefaults.standard.set(totalTime, forKey: totalKey)
     }
 
-    // Load state
+    // =====================================================
+    // Load saved timer state
+    // =====================================================
     func loadTimer() {
 
-        let savedTime = UserDefaults.standard.integer(forKey: saveKey)
+        let savedRemaining = UserDefaults.standard.integer(forKey: remainingKey)
+        let savedTotal = UserDefaults.standard.integer(forKey: totalKey)
 
-        if savedTime > 0 {
-            timeRemaining = savedTime
-            totalTime = savedTime
+        if savedTotal > 0 {
+            totalTime = savedTotal
+        }
+
+        if savedRemaining > 0 {
+            timeRemaining = savedRemaining
         }
     }
 
-    // Progress (0 → 1)
+    // =====================================================
+    // Progress value (0.0 → 1.0)
+    // =====================================================
     var progress: Double {
 
         guard totalTime > 0 else { return 0 }
