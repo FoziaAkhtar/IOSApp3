@@ -18,8 +18,8 @@ struct HomeView: View {
         NavigationStack {
 
             // =====================================================
-            // List is REQUIRED for Apple Watch reliable touch input
-            // It ensures full-row tappable navigation behavior
+            // List ensures proper touch interaction on Apple Watch
+            // and makes navigation fully tappable
             // =====================================================
             List {
 
@@ -33,6 +33,18 @@ struct HomeView: View {
                 } label: {
 
                     Text("Preset Timers")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .cornerRadius(12)
                 }
 
                 // =====================================================
@@ -45,6 +57,18 @@ struct HomeView: View {
                 } label: {
 
                     Text("Custom Timer")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            LinearGradient(
+                                colors: [.green, .mint],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .cornerRadius(12)
                 }
             }
 
