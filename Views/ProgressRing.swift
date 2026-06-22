@@ -5,43 +5,53 @@ import SwiftUI
 // IOSApp3
 // ProgressRing
 // Purpose:
-// Shows a circular progress indicator from 0% to 100%.
-// Used to visually display timer progress.
+//  Shows timer progress using a circular
+//  ring with dynamic color changes.
 // =====================================
 
 struct ProgressRing: View {
 
-    // Progress value (0.0 = empty, 1.0 = full)
+    // Current progress (0.0 → 1.0)
     var progress: Double
+
+    // Dynamic color from ViewModel
+    var progressColor: Color
 
     var body: some View {
 
         ZStack {
 
-            // Background ring (full circle track)
+            // =====================================================
+            // Background Ring (light track)
+            // =====================================================
             Circle()
-                .stroke(lineWidth: 10)
-                .opacity(0.2)
+                .stroke(
+                    Color.gray.opacity(0.2),
+                    lineWidth: 10
+                )
 
-            // Progress ring (filled portion)
+            // =====================================================
+            // Progress Ring (colored fill)
+            // =====================================================
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
+                    progressColor,
                     style: StrokeStyle(
                         lineWidth: 10,
                         lineCap: .round
                     )
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.linear, value: progress)
+                .animation(.easeInOut(duration: 0.5), value: progress)
+
+            // =====================================================
+            // Center glow dot (optional visual polish)
+            // =====================================================
+            Circle()
+                .fill(progressColor.opacity(0.15))
+                .frame(width: 80, height: 80)
         }
-
-        // Ring size
-        .frame(width: 120, height: 120)
+        .frame(width: 130, height: 130)
     }
-}
-
-// Preview
-#Preview {
-    ProgressRing(progress: 0.75)
 }
