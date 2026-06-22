@@ -1,6 +1,4 @@
 
-import SwiftUI
-
 // =========================================
 // HomeView.swift
 // iOSApp3
@@ -9,19 +7,23 @@ import SwiftUI
 // Lets user choose between preset or custom timers.
 // =========================================
 
+import SwiftUI
+
 struct HomeView: View {
 
     var body: some View {
 
-        // IMPORTANT:
-        // NavigationStack is required for NavigationLink to work
         NavigationStack {
 
-            // =====================================================
-            // List ensures proper touch interaction on Apple Watch
-            // and makes navigation fully tappable
-            // =====================================================
-            List {
+            VStack(spacing: 20) {
+
+                // =====================================================
+                // App title (inside UI, not navigation bar)
+                // =====================================================
+                Text("Watch Timer Pro")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 10)
 
                 // =====================================================
                 // Navigate to Preset Timers screen
@@ -33,18 +35,10 @@ struct HomeView: View {
                 } label: {
 
                     Text("Preset Timers")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .padding()
                         .frame(maxWidth: .infinity)
-                        .background(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .cornerRadius(12)
+                        .padding()
+                        .background(Color.blue.opacity(0.2))
+                        .cornerRadius(10)
                 }
 
                 // =====================================================
@@ -57,25 +51,18 @@ struct HomeView: View {
                 } label: {
 
                     Text("Custom Timer")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .padding()
                         .frame(maxWidth: .infinity)
-                        .background(
-                            LinearGradient(
-                                colors: [.green, .mint],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .cornerRadius(12)
+                        .padding()
+                        .background(Color.green.opacity(0.2))
+                        .cornerRadius(10)
                 }
             }
+            .padding()
 
             // =====================================================
-            // Navigation title shown at top of screen
+            // FIX: Navigation bar title changed here
             // =====================================================
-            .navigationTitle("Home")
+            .navigationTitle("Watch Timer")
         }
     }
 }
