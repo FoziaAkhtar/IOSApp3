@@ -1,6 +1,4 @@
 
-import SwiftUI
-
 // =====================================
 // IOSApp3
 // ProgressRing
@@ -8,6 +6,8 @@ import SwiftUI
 //  Shows timer progress using a circular
 //  ring with dynamic color changes.
 // =====================================
+
+import SwiftUI
 
 struct ProgressRing: View {
 
@@ -27,7 +27,7 @@ struct ProgressRing: View {
             Circle()
                 .stroke(
                     Color.gray.opacity(0.2),
-                    lineWidth: 10
+                    lineWidth: 8   // FIX: thinner for Watch fit
                 )
 
             // =====================================================
@@ -38,20 +38,22 @@ struct ProgressRing: View {
                 .stroke(
                     progressColor,
                     style: StrokeStyle(
-                        lineWidth: 10,
+                        lineWidth: 8,     // FIX: matches background
                         lineCap: .round
                     )
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.easeInOut(duration: 0.5), value: progress)
+                .animation(.easeInOut(duration: 0.4), value: progress)
 
             // =====================================================
-            // Center glow dot (optional visual polish)
+            // Center Dot (simplified glow)
             // =====================================================
             Circle()
-                .fill(progressColor.opacity(0.15))
-                .frame(width: 80, height: 80)
+                .fill(progressColor.opacity(0.12))
+                .frame(width: 60, height: 60)   // FIX: smaller & cleaner
         }
-        .frame(width: 130, height: 130)
+
+        // FIX: smaller overall size for Watch UI
+        .frame(width: 110, height: 110)
     }
 }
