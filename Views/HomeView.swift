@@ -1,4 +1,6 @@
 
+import SwiftUI
+
 // =========================================
 // HomeView.swift
 // iOSApp3
@@ -6,8 +8,6 @@
 // Main menu screen of the app.
 // Lets user choose between preset or custom timers.
 // =========================================
-
-import SwiftUI
 
 struct HomeView: View {
 
@@ -18,9 +18,9 @@ struct HomeView: View {
             VStack(spacing: 20) {
 
                 // =====================================================
-                // App title (inside UI, not navigation bar)
+                // App title (custom UI title instead of navigation bar)
                 // =====================================================
-                Text("Watch Timer Pro")
+                Text("Watch Timer")
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.bottom, 10)
@@ -60,9 +60,10 @@ struct HomeView: View {
             .padding()
 
             // =====================================================
-            // FIX: Navigation bar title changed here
+            // hides navigation bar title completely
             // =====================================================
-            .navigationTitle("Watch Timer")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 }
