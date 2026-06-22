@@ -2,7 +2,7 @@
 // ================================================
 // IOSApp3
 // TimerView
-//
+// ================================================
 // Purpose:
 // Displays countdown timer UI with:
 // - Progress ring
@@ -14,10 +14,8 @@ import SwiftUI
 
 struct TimerView: View {
 
-    // Total duration passed from previous screen
     let seconds: Int
 
-    // Timer logic controller
     @StateObject private var timerVM = TimerViewModel()
 
     var body: some View {
@@ -25,7 +23,7 @@ struct TimerView: View {
         VStack(spacing: 18) {
 
             // =====================================================
-            // Progress Indicator (NOW COLORED)
+            // Progress Ring (with color)
             // =====================================================
             ProgressRing(
                 progress: timerVM.progress,
@@ -33,37 +31,31 @@ struct TimerView: View {
             )
 
             // =====================================================
-            // Remaining Time Display (color matched to ring)
+            // Remaining Time
             // =====================================================
             Text(formatTime(timerVM.timeRemaining))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(timerVM.progressColor)
 
             // =====================================================
-            // Controls (modern styled buttons)
+            // Controls
             // =====================================================
             HStack(spacing: 12) {
 
-                Button {
+                Button("Start") {
                     timerVM.startTimer()
-                } label: {
-                    Label("Start", systemImage: "play.fill")
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.green)
 
-                Button {
+                Button("Pause") {
                     timerVM.pauseTimer()
-                } label: {
-                    Label("Pause", systemImage: "pause.fill")
                 }
                 .buttonStyle(.bordered)
                 .tint(.orange)
 
-                Button {
+                Button("Reset") {
                     timerVM.resetTimer()
-                } label: {
-                    Label("Reset", systemImage: "arrow.counterclockwise")
                 }
                 .buttonStyle(.bordered)
                 .tint(.red)
@@ -72,26 +64,18 @@ struct TimerView: View {
         .padding()
 
         // =====================================================
-        // Set timer only once when screen opens
+        // FIX: Prevent timer reset every navigation
         // =====================================================
         .onAppear {
-            timerVM.setTimer(seconds: seconds)
+            if timerVM.totalTime == 0 {
+                timerVM.setTimer(seconds: seconds)
+            }
         }
     }
 
-    // =====================================================
-    // Format seconds into MM:SS
-    // Example: 90 → 01:30
-    // =====================================================
     func formatTime(_ totalSeconds: Int) -> String {
-
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
-
         return String(format: "%02d:%02d", minutes, seconds)
     }
-}
-
-#Preview {
-    TimerView(seconds: 60)
 }
