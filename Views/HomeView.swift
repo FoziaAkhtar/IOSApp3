@@ -13,45 +13,47 @@ struct HomeView: View {
 
     var body: some View {
 
-        VStack(spacing: 20) {
+        // IMPORTANT: Navigation container is required
+        NavigationStack {
 
-            // App title
-            Text("Watch Timer Pro")
-                .font(.title2)
-                .fontWeight(.bold)
-                .padding(.bottom, 20)
+            VStack(spacing: 20) {
 
-            // Navigate to Preset Timers screen
-            NavigationLink {
+                // App title
+                Text("Watch Timer Pro")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 20)
 
-                PresetTimerView()
+                // Navigate to Preset Timers screen
+                NavigationLink {
 
-            } label: {
+                    PresetTimerView()
 
-                Text("Preset Timers")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.2))
-                    .cornerRadius(10)
+                } label: {
+
+                    Text("Preset Timers")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue.opacity(0.2))
+                        .cornerRadius(10)
+                }
+
+                // Navigate to Custom Timer screen
+                NavigationLink {
+
+                    CustomTimerView()
+
+                } label: {
+
+                    Text("Custom Timer")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.green.opacity(0.2))
+                        .cornerRadius(10)
+                }
             }
-
-            // Navigate to Custom Timer screen
-            NavigationLink {
-
-                CustomTimerView()
-
-            } label: {
-
-                Text("Custom Timer")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.green.opacity(0.2))
-                    .cornerRadius(10)
-            }
+            .padding()
+            .navigationTitle("Home")
         }
-        .padding()
-
-        // Navigation title
-        .navigationTitle("Home")
     }
 }
