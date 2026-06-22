@@ -2,6 +2,7 @@
 // =====================================
 // IOSApp3
 // ProgressRing
+// ====================================
 // Purpose:
 //  Shows timer progress using a circular
 //  ring with dynamic color changes.
@@ -38,7 +39,7 @@ struct ProgressRing: View {
                 .stroke(
                     progressColor,
                     style: StrokeStyle(
-                        lineWidth: 8,     // FIX: matches background
+                        lineWidth: 8,
                         lineCap: .round
                     )
                 )
