@@ -140,7 +140,7 @@ class TimerViewModel: ObservableObject {
         WKInterfaceDevice.current().play(.success)
         #endif
 
-        // FIXED: matches NotificationManager(seconds:)
+        // matches NotificationManager(seconds:)
         NotificationManager.shared.scheduleNotification(seconds: totalTime)
 
         saveTimer()
