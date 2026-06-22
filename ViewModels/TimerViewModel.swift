@@ -2,11 +2,12 @@
 // ===========================================
 // IOSApp3
 // TimerViewModel
-// ===========================================
+//
 // Purpose:
 // Handles all timer logic including:
 // start, pause, reset, persistence,
-// progress updates, haptics, notifications.
+// progress updates, haptics, notifications,
+// and UI color state.
 // ===========================================
 
 import SwiftUI
@@ -16,7 +17,7 @@ import WatchKit
 class TimerViewModel: ObservableObject {
 
     // =====================================================
-    // Published UI state (auto-updates UI)
+    // Published UI state (updates UI automatically)
     // =====================================================
     @Published var timeRemaining = 0
     @Published var totalTime = 0
@@ -84,12 +85,12 @@ class TimerViewModel: ObservableObject {
             }
 
             // =================================================
-            // Countdown step
+            // Countdown
             // =================================================
             self.timeRemaining -= 1
 
             // =================================================
-            // Warning haptic (Watch only)
+            // Warning haptic (last 10 seconds)
             // =================================================
             if self.timeRemaining <= 10 && self.timeRemaining > 0 {
 
@@ -127,7 +128,7 @@ class TimerViewModel: ObservableObject {
     }
 
     // =====================================================
-    // Completion handler
+    // Timer completion handler
     // =====================================================
     private func completeTimer() {
 
@@ -140,14 +141,14 @@ class TimerViewModel: ObservableObject {
         WKInterfaceDevice.current().play(.success)
         #endif
 
-        // matches NotificationManager(seconds:)
+        // Notification when timer finishes
         NotificationManager.shared.scheduleNotification(seconds: totalTime)
 
         saveTimer()
     }
 
     // =====================================================
-    // Save state
+    // Save timer state
     // =====================================================
     func saveTimer() {
 
@@ -156,7 +157,7 @@ class TimerViewModel: ObservableObject {
     }
 
     // =====================================================
-    // Load state
+    // Load timer state
     // =====================================================
     func loadTimer() {
 
@@ -173,12 +174,30 @@ class TimerViewModel: ObservableObject {
     }
 
     // =====================================================
-    // Progress (0 → 1)
+    // Progress value (0 → 1)
     // =====================================================
     var progress: Double {
 
         guard totalTime > 0 else { return 0 }
 
         return Double(max(timeRemaining, 0)) / Double(totalTime)
+    }
+
+    // =====================================================
+    // UI Color based on remaining time
+    // =====================================================
+    var progressColor: Color {
+
+        switch progress {
+
+        case 0.5...1:
+            return .green
+
+        case 0.2..<0.5:
+            return .orange
+
+        default:
+            return .red
+        }
     }
 }
