@@ -1,64 +1,68 @@
 
-// ==============================================
+// ===========================================
 // IOSApp3
 // CustomTimerView
-//
+// ===========================================
 // Purpose:
-// Allows user to create a custom timer
-// using minute and second pickers.
-// ==============================================
+// Lets user create a custom timer duration.
+// ===========================================
 
 import SwiftUI
 
 struct CustomTimerView: View {
 
-    // Selected minutes
-    @State private var minutes = 1
-
-    // Selected seconds
-    @State private var seconds = 0
+    @State private var minutes: String = ""
 
     var body: some View {
 
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
 
-            // Screen title
+            // =====================================================
+            // Custom Title (NOT navigation bar title)
+            // =====================================================
             Text("Custom Timer")
                 .font(.headline)
+                .fontWeight(.bold)
 
-            // Minutes picker
-            Picker("Minutes", selection: $minutes) {
+            // =====================================================
+            // Input Field (minutes)
+            // =====================================================
+            TextField("Enter minutes", text: $minutes)
+                .keyboardType(.numberPad)
+                .padding()
+                .background(Color.gray.opacity(0.15))
+                .cornerRadius(10)
 
-                ForEach(0..<60, id: \.self) { minute in
-                    Text("\(minute) min")
-                }
-            }
-            .pickerStyle(.wheel)
-
-            // Seconds picker
-            Picker("Seconds", selection: $seconds) {
-
-                ForEach(0..<60, id: \.self) { second in
-                    Text("\(second) sec")
-                }
-            }
-            .pickerStyle(.wheel)
-
-            // Navigate to timer screen
+            // =====================================================
+            // Start Button
+            // =====================================================
             NavigationLink {
 
-                TimerView(seconds: (minutes * 60) + seconds)
+                if let mins = Int(minutes) {
+                    TimerView(seconds: mins * 60)
+                } else {
+                    TimerView(seconds: 60)
+                }
 
             } label: {
 
-                Text("Set Timer")
+                Text("Start Timer")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue.opacity(0.2))
+                    .background(Color.purple.opacity(0.3))
                     .cornerRadius(10)
             }
         }
         .padding()
-        .navigationTitle("Custom Timer")
+
+        // =====================================================
+        // removes top navigation header completely
+        // =====================================================
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .navigationBar)
     }
+}
+
+#Preview {
+    CustomTimerView()
 }
