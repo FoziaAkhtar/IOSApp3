@@ -13,18 +13,19 @@ struct HomeView: View {
 
     var body: some View {
 
-        // IMPORTANT: Navigation container is required
+        // IMPORTANT:
+        // NavigationStack is required for NavigationLink to work
         NavigationStack {
 
-            VStack(spacing: 20) {
+            // =====================================================
+            // List is REQUIRED for Apple Watch reliable touch input
+            // It ensures full-row tappable navigation behavior
+            // =====================================================
+            List {
 
-                // App title
-                Text("Watch Timer Pro")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 20)
-
+                // =====================================================
                 // Navigate to Preset Timers screen
+                // =====================================================
                 NavigationLink {
 
                     PresetTimerView()
@@ -32,13 +33,11 @@ struct HomeView: View {
                 } label: {
 
                     Text("Preset Timers")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.2))
-                        .cornerRadius(10)
                 }
 
+                // =====================================================
                 // Navigate to Custom Timer screen
+                // =====================================================
                 NavigationLink {
 
                     CustomTimerView()
@@ -46,13 +45,12 @@ struct HomeView: View {
                 } label: {
 
                     Text("Custom Timer")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green.opacity(0.2))
-                        .cornerRadius(10)
                 }
             }
-            .padding()
+
+            // =====================================================
+            // Navigation title shown at top of screen
+            // =====================================================
             .navigationTitle("Home")
         }
     }
