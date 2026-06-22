@@ -22,47 +22,58 @@ struct TimerView: View {
 
     var body: some View {
 
-        VStack(spacing: 15) {
+        VStack(spacing: 18) {
 
             // =====================================================
-            // Progress Indicator
+            // Progress Indicator (NOW COLORED)
             // =====================================================
-            ProgressRing(progress: timerVM.progress)
+            ProgressRing(
+                progress: timerVM.progress,
+                progressColor: timerVM.progressColor
+            )
 
             // =====================================================
-            // Remaining Time Display
+            // Remaining Time Display (color matched to ring)
             // =====================================================
             Text(formatTime(timerVM.timeRemaining))
-                .font(.headline)
-                .bold()
+                .font(.system(size: 28, weight: .bold, design: .rounded))
+                .foregroundStyle(timerVM.progressColor)
 
             // =====================================================
-            // Controls
+            // Controls (modern styled buttons)
             // =====================================================
-            HStack(spacing: 20) {
+            HStack(spacing: 12) {
 
                 Button {
                     timerVM.startTimer()
                 } label: {
                     Label("Start", systemImage: "play.fill")
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(.green)
 
                 Button {
                     timerVM.pauseTimer()
                 } label: {
                     Label("Pause", systemImage: "pause.fill")
                 }
+                .buttonStyle(.bordered)
+                .tint(.orange)
 
                 Button {
                     timerVM.resetTimer()
                 } label: {
                     Label("Reset", systemImage: "arrow.counterclockwise")
                 }
+                .buttonStyle(.bordered)
+                .tint(.red)
             }
         }
         .padding()
 
+        // =====================================================
         // Set timer only once when screen opens
+        // =====================================================
         .onAppear {
             timerVM.setTimer(seconds: seconds)
         }
