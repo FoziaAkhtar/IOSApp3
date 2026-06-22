@@ -5,7 +5,7 @@
 // ================================================
 // Purpose:
 // Displays countdown timer UI with:
-// - Progress ring (watch-safe size)
+// - Progress ring
 // - Remaining time
 // - Start, pause, reset controls
 // ================================================
@@ -20,64 +20,67 @@ struct TimerView: View {
 
     var body: some View {
 
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
 
-            Spacer(minLength: 5)
+            Spacer(minLength: 0)
 
             // =====================================================
-            // Progress Ring (smaller for Watch fit)
+            // Progress Ring
             // =====================================================
             ProgressRing(
                 progress: timerVM.progress,
                 progressColor: timerVM.progressColor
             )
-            .frame(width: 120, height: 120)
+            .frame(width: 110, height: 110)
 
             // =====================================================
             // Remaining Time
             // =====================================================
             Text(formatTime(timerVM.timeRemaining))
-                .font(.system(size: 24, weight: .bold, design: .rounded))
+                .font(.system(size: 22, weight: .bold, design: .rounded))
                 .foregroundStyle(timerVM.progressColor)
-                .minimumScaleFactor(0.7)
-
-            Spacer(minLength: 5)
+                .padding(.top, 2)
 
             // =====================================================
-            // Controls (compact Watch layout)
+            // Controls (FIXED POSITION - closer to ring)
             // =====================================================
-            HStack(spacing: 10) {
+            HStack(spacing: 16) {
 
                 Button {
                     timerVM.startTimer()
                 } label: {
                     Image(systemName: "play.fill")
+                        .font(.system(size: 14, weight: .bold))
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
+                .buttonStyle(.plain)
+                .foregroundStyle(.green)
 
                 Button {
                     timerVM.pauseTimer()
                 } label: {
                     Image(systemName: "pause.fill")
+                        .font(.system(size: 14, weight: .bold))
                 }
-                .buttonStyle(.bordered)
-                .tint(.orange)
+                .buttonStyle(.plain)
+                .foregroundStyle(.orange)
 
                 Button {
                     timerVM.resetTimer()
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
+                        .font(.system(size: 14, weight: .bold))
                 }
-                .buttonStyle(.bordered)
-                .tint(.red)
+                .buttonStyle(.plain)
+                .foregroundStyle(.red)
             }
+            .padding(.top, 4)
+
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 6)
-        .padding(.vertical, 8)
 
         // =====================================================
-        // prevent reset on navigation
+        // Prevent reset on navigation
         // =====================================================
         .onAppear {
             if timerVM.totalTime == 0 {
@@ -86,9 +89,6 @@ struct TimerView: View {
         }
     }
 
-    // =====================================================
-    // Format seconds into MM:SS
-    // =====================================================
     func formatTime(_ totalSeconds: Int) -> String {
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
