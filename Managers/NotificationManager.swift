@@ -2,7 +2,7 @@
 // ===========================================
 // IOSApp3
 // NotificationManager
-//
+// ==========================================
 // Purpose:
 // Manages local notifications for the app.
 // Triggers an alert when the timer finishes.
@@ -43,25 +43,42 @@ class NotificationManager {
 
     // =====================================================
     // Schedules a notification when timer finishes
+    // - Removes old pending notifications
+    // - Ensures only ONE active timer notification exists
     // =====================================================
     func scheduleNotification(seconds: Int) {
 
+        // Remove any previous scheduled notifications
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+
+        // =====================================================
+        // Notification content
+        // =====================================================
         let content = UNMutableNotificationContent()
         content.title = "Timer Finished"
         content.body = "Your countdown is complete."
         content.sound = .default
 
+        // =====================================================
+        // Trigger (fires after timer duration)
+        // =====================================================
         let trigger = UNTimeIntervalNotificationTrigger(
-            timeInterval: TimeInterval(seconds),
+            timeInterval: TimeInterval(max(seconds, 1)),
             repeats: false
         )
 
+        // =====================================================
+        // Create request
+        // =====================================================
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,
             content: content,
             trigger: trigger
         )
 
+        // =====================================================
+        // Add notification to system
+        // =====================================================
         UNUserNotificationCenter.current().add(request) { error in
 
             if let error = error {
